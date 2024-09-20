@@ -2,7 +2,7 @@
   "name": "provamarinke",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "express": "^4.21.0",
+    "mysql2": "^3.11.3",
     "provamarinke": "file:",
     "sequelize": "^6.37.3"
   }
