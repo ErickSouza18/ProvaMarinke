@@ -60,7 +60,7 @@ export class ContratanteService {
             try {
                 const [numberOfAffectedRows, [updatedContratante]] = yield Contratante.update(data, { where: { id }, returning: true });
                 if (numberOfAffectedRows === 0) {
-                    return null; // Retorna null se nenhum registro foi atualizado
+                    return null;
                 }
                 return updatedContratante;
             }

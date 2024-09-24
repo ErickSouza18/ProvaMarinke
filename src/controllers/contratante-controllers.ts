@@ -13,36 +13,33 @@ export class ContratanteController {
         try {
             const { nomeCompleto, email, telefone } = req.body;
             const newContratante = await this.contratanteService.createContratante(nomeCompleto, email, telefone);
-
-            // Removendo os campos indesejados
-            const { createdAt, updatedAt, ...result } = newContratante.toJSON();
-
-            return res.status(201).json(result);
+    
+            return res.status(201).json(newContratante);
         } catch (error) {
-            return res.status(500).json({ message: "Falha ao criar contratante", error });
+            return res.status(500).json({ message: "Falha ao criar contratante", error: (error as Error).message });
         }
     }
+    
 
     public async getAllContratante(req: Request, res: Response): Promise<Response> {
         try {
             const contratantes = await this.contratanteService.getAllContratantes();
-    
+
             if (contratantes.length === 0) {
                 return res.status(404).json({ message: "Nenhum contratante encontrado." });
             }
 
-            // Removendo os campos indesejados de cada contratante
             const result = contratantes.map(contratante => {
                 const { createdAt, updatedAt, ...rest } = contratante.toJSON();
                 return rest;
             });
-    
+
             return res.status(201).json(result);
         } catch (error) {
             return res.status(500).json({ message: "Falha ao encontrar os contratantes", error });
         }
     }
-    
+
 
     public async deleteContratante(req: Request, res: Response): Promise<Response> {
         const { id } = req.params;
@@ -53,31 +50,48 @@ export class ContratanteController {
             return res.status(500).json({ message: "Falha ao excluir contratante", error });
         }
     }
-    
+
 
     public async updateContratante(req: Request, res: Response): Promise<Response> {
         try {
-            const { id } = req.params; // Pega o ID da rota
-            const { nomeCompleto, email, telefone } = req.body; // Pega os dados do corpo da requisição
+            const { id } = req.params; 
+            const { nomeCompleto, email, telefone } = req.body; 
+            
             const updatedContratante = await this.contratanteService.update(
                 Number(id),
-                { nomeCompleto, email, telefone } // Passa um objeto com os dados
+                { nomeCompleto, email, telefone }
             );
-
+    
             if (!updatedContratante) {
                 return res.status(404).json({ message: "Contratante não encontrado" });
             }
-
-            // Removendo os campos indesejados
-            const result = updatedContratante!.get({ plain: true });
+    
+            const result = updatedContratante.get({ plain: true });
             delete result.createdAt;
             delete result.updatedAt;
-
-            return res.status(200).json(result);
+    
+            return res.status(200).json({ 
+                message: `Contratante com ID ${id} foi atualizado com sucesso`,
+                contratante: result 
+            });
         } catch (error) {
-            return res.status(500).json({ message: `Falha ao atualizar contratante`, error });
+            if (error instanceof Error) {
+                console.error('Erro ao atualizar contratante:', error.message);
+                return res.status(500).json({ message: `Falha ao atualizar contratante, Mas mesmo assim ele foi atualizado`});
+            } else {
+                console.error('Erro desconhecido ao atualizar contratante:', error);
+                return res.status(500).json({ message: `Falha ao atualizar contratante`, error: 'Erro desconhecido' });
+            }
         }
     }
+    
+    
+    
+    
+
+
+
+
 
 
     public async getContratanteById(req: Request, res: Response): Promise<Response> {

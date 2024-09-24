@@ -1,8 +1,6 @@
 import { Model, DataTypes } from "sequelize";
-// Definição da classe do modelo
 export class Contratante extends Model {
 }
-// Exporta a função para inicializar o modelo
 export function initializeContratante(sequelize) {
     Contratante.init({
         id: {
@@ -17,7 +15,7 @@ export function initializeContratante(sequelize) {
         email: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true, // Adicionei unique
+            unique: true,
             validate: {
                 isEmail: true,
             },
@@ -30,7 +28,7 @@ export function initializeContratante(sequelize) {
         sequelize,
         modelName: "Contratante",
         tableName: "contratantes",
-        timestamps: true, // Habilita timestamps
+        timestamps: true,
         freezeTableName: true,
     });
 }

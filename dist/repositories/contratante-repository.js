@@ -17,7 +17,7 @@ export class ContratanteRepository {
                 return contratante;
             }
             catch (error) {
-                throw new Error(`Impossivel criar contratante: ${error.message}`);
+                throw new Error(`Impossível criar contratante: ${error.message}`);
             }
         });
     }

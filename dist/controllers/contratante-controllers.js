@@ -28,12 +28,10 @@ export class ContratanteController {
             try {
                 const { nomeCompleto, email, telefone } = req.body;
                 const newContratante = yield this.contratanteService.createContratante(nomeCompleto, email, telefone);
-                // Removendo os campos indesejados
-                const _a = newContratante.toJSON(), { createdAt, updatedAt } = _a, result = __rest(_a, ["createdAt", "updatedAt"]);
-                return res.status(201).json(result);
+                return res.status(201).json(newContratante);
             }
             catch (error) {
-                return res.status(500).json({ message: "Falha ao criar contratante", error });
+                return res.status(500).json({ message: "Falha ao criar contratante", error: error.message });
             }
         });
     }
@@ -44,7 +42,6 @@ export class ContratanteController {
                 if (contratantes.length === 0) {
                     return res.status(404).json({ message: "Nenhum contratante encontrado." });
                 }
-                // Removendo os campos indesejados de cada contratante
                 const result = contratantes.map(contratante => {
                     const _a = contratante.toJSON(), { createdAt, updatedAt } = _a, rest = __rest(_a, ["createdAt", "updatedAt"]);
                     return rest;
@@ -71,21 +68,29 @@ export class ContratanteController {
     updateContratante(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { id } = req.params; // Pega o ID da rota
-                const { nomeCompleto, email, telefone } = req.body; // Pega os dados do corpo da requisição
-                const updatedContratante = yield this.contratanteService.update(Number(id), { nomeCompleto, email, telefone } // Passa um objeto com os dados
-                );
+                const { id } = req.params;
+                const { nomeCompleto, email, telefone } = req.body;
+                const updatedContratante = yield this.contratanteService.update(Number(id), { nomeCompleto, email, telefone });
                 if (!updatedContratante) {
                     return res.status(404).json({ message: "Contratante não encontrado" });
                 }
-                // Removendo os campos indesejados
                 const result = updatedContratante.get({ plain: true });
                 delete result.createdAt;
                 delete result.updatedAt;
-                return res.status(200).json(result);
+                return res.status(200).json({
+                    message: `Contratante com ID ${id} foi atualizado com sucesso`,
+                    contratante: result
+                });
             }
             catch (error) {
-                return res.status(500).json({ message: `Falha ao atualizar contratante`, error });
+                if (error instanceof Error) {
+                    console.error('Erro ao atualizar contratante:', error.message);
+                    return res.status(500).json({ message: `Falha ao atualizar contratante, Mas mesmo assim ele foi atualizado` });
+                }
+                else {
+                    console.error('Erro desconhecido ao atualizar contratante:', error);
+                    return res.status(500).json({ message: `Falha ao atualizar contratante`, error: 'Erro desconhecido' });
+                }
             }
         });
     }

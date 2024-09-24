@@ -6,4 +6,5 @@ router.post("/contratantes", (req, res) => contratanteController.createContratan
 router.get("/contratantes", (req, res) => contratanteController.getAllContratante(req, res));
 router.get("/contratantes/:id", (req, res) => contratanteController.getContratanteById(req, res));
 router.delete("/contratantes/:id", (req, res) => contratanteController.deleteContratante(req, res));
+router.put("/contratantes/:id", (req, res) => contratanteController.updateContratante(req, res));
 export default router;

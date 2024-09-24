@@ -51,7 +51,7 @@ export class ContratanteService {
             );
 
             if (numberOfAffectedRows === 0) {
-                return null; // Retorna null se nenhum registro foi atualizado
+                return null;
             }
 
             return updatedContratante;

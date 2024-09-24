@@ -50,7 +50,7 @@ export function initializeContratante(sequelize: Sequelize) {
       sequelize,
       modelName: "Contratante",
       tableName: "contratantes",
-      timestamps: false, 
+      timestamps: true, 
       freezeTableName: true,
     }
   );

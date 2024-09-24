@@ -8,9 +8,10 @@ export class ContratanteRepository {
             const contratante = await Contratante.create(data);
             return contratante;
         } catch (error) {
-            throw new Error(`Impossivel criar contratante: ${(error as Error).message}`)
+            throw new Error(`Impossível criar contratante: ${(error as Error).message}`);
         }
     }
+    
 
     //encontrar todos contratantes
     public async findAll(): Promise<Contratante[]> {
