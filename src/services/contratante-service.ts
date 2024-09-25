@@ -1,6 +1,5 @@
 import { Contratante, ContratanteCreationAttributes } from "../models/contratante-models.js";
 
-
 export class ContratanteService {
 
     public async createContratante(nomeCompleto: string, email: string, telefone: string): Promise<Contratante> {
