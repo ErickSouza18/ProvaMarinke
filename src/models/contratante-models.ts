@@ -1,10 +1,10 @@
-import { DataTypes, Model, STRING, Sequelize, Optional } from "sequelize";
+import { DataTypes, Model, Sequelize, Optional } from "sequelize";
 
 export interface ContratanteAttributes {
     id: number;
     nomeCompleto: string;
-    email: string;
-    telefone: string;
+    email?: string;
+    telefone?: string;
     createdAt?: Date;
     updateAt?: Date;
 }
@@ -21,10 +21,6 @@ export class Contratante extends Model<ContratanteAttributes, ContratanteCreatio
     public readonly updatedAt!: Date;
 }
 
-
-//export class Contratante extends Model<ContratanteAttibutes, ContratanteCreationAttributes>
-
-
 export function initializeContratante(sequelize: Sequelize) {
     Contratante.init(
         {
@@ -39,7 +35,7 @@ export function initializeContratante(sequelize: Sequelize) {
             },
             email: {
                 type: DataTypes.STRING,
-                allowNull: false,
+                allowNull: true,
                 unique: true,
                 validate: {
                     isEmail: true,
@@ -47,16 +43,15 @@ export function initializeContratante(sequelize: Sequelize) {
             },
             telefone: {
                 type: DataTypes.STRING,
-                allowNull: false,
+                allowNull: true,
             },
         },
-
         {
             sequelize,
             modelName: "Contratante",
             tableName: "contratante",
             timestamps: false,
-            //freezTableName: true,
+            freezeTableName: true,
         }
     );
 }

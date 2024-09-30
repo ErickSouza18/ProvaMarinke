@@ -1,1 +1,9 @@
-node_modules
+node_modules/
+dist/
+dist/controllers/contratante-controllers.js
+dist/app.js
+dist/models/contratante-models.js
+dist/repositories/contratante-repository.js
+dist/shared/connection.js
+dist/services/contratante-service.js
+dist/routes/contratante-routes.js

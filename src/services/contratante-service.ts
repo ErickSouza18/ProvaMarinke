@@ -1,11 +1,11 @@
 import { Contratante } from "../models/contratante-models";
+
 export class ContratanteService {
 
-    // Create a new "Contratante" in the database
     public async createContratante(nomeCompleto: string): Promise<Contratante> {
         try {
 
-            const contratante = await Contratante.create({ nomeCompleto });
+            const contratante = await Contratante.create({ nomeCompleto })
             return contratante;
         } catch (error) {
             if (error instanceof Error) {
@@ -16,7 +16,6 @@ export class ContratanteService {
             }
         }
     }
-    // Get all "Contratante" records
     public async getAllContratantes(): Promise<Contratante[]> {
         try {
             return await Contratante.findAll();

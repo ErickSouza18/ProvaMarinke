@@ -1,4 +1,4 @@
-import Contratante from "../models/contratante-models";
+import { Contratante, ContratanteCreationAttributes } from "../models/contratante-models";
 
 
 export class ContratanteRepository {
@@ -21,7 +21,7 @@ export class ContratanteRepository {
 
     public async findById(id: number): Promise<Contratante | null> {
         try {
-            return await Contratante.findById(id);
+            return await Contratante.findByPk(id);
         } catch (error) {
             throw new Error(`Unable to find contratantes with ID ${id}: ${(error as Error).message}`);
         }
