@@ -1,5 +1,5 @@
 import { Model, DataTypes } from "sequelize";
-import { Profile } from "./profile-models";
+import { Profile } from "./profile-models.js";
 export class Deposit extends Model {
 }
 export function initializeDeposit(sequelize) {

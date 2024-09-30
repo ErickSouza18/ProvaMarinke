@@ -1,5 +1,7 @@
 import { Profile, ProfileCreationAttributes } from "../models/profile-models.js";
-
+import { Deposit } from "../models/deposit-models.js";
+import { Payment } from "../models/Payment-models.js";
+import { Job } from "../models/job-models.js";
 
 export class ProfileService {
 
@@ -55,4 +57,42 @@ export class ProfileService {
             throw new Error(`Impossível excluir perfil com ID ${id}: ${(error as Error).message}`);
         }
     }
+
+    public async getBalance(id: number): Promise<number> {
+        try {
+            const deposits = await Deposit.sum('depositValue', { where: { id } }); 
+            const payments = await Payment.sum('paymentValue', { where: { id } }); 
+            return (deposits || 0) - (payments || 0); 
+        } catch (error) {
+            throw new Error(`Erro ao calcular saldo: ${(error as Error).message}`);
+        }
+    }
+    
+    
+
+    public async getUnpaidJobsDetails(id: number): Promise<{ jobId: number, description: string, status: string }[]> {
+        try {
+            const unpaidJobs = await Job.findAll({
+                attributes: ['id', 'description'],
+                where: {
+                    id: id,
+                    paid: false 
+                }
+            });
+    
+            // Se o campo status não existe, adicionamos uma lógica para definir
+            return unpaidJobs.map(job => ({
+                jobId: job.id,
+                description: job.description,
+                status: "pending" // Defina um status aqui
+            }));
+            
+        } catch (error) {
+            throw new Error(`Erro ao buscar detalhes dos jobs não pagos: ${(error as Error).message}`);
+        }
+    }
+    
+    
+    
+    
 }

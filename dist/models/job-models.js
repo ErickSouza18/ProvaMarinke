@@ -1,5 +1,5 @@
 import { Model, DataTypes } from "sequelize";
-import { Contract } from "./contract-models";
+import { Contract } from "./contract-models.js";
 export class Job extends Model {
 }
 export function initializeJob(sequelize) {

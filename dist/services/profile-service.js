@@ -8,6 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Profile } from "../models/profile-models.js";
+import { Deposit } from "../models/deposit-models.js";
+import { Payment } from "../models/Payment-models.js";
+import { Job } from "../models/job-models.js";
 export class ProfileService {
     createProfile(firstName, lastName, profession, balance, type) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -66,6 +69,40 @@ export class ProfileService {
             }
             catch (error) {
                 throw new Error(`Impossível excluir perfil com ID ${id}: ${error.message}`);
+            }
+        });
+    }
+    getBalance(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const deposits = yield Deposit.sum('depositValue', { where: { id } });
+                const payments = yield Payment.sum('paymentValue', { where: { id } });
+                return (deposits || 0) - (payments || 0);
+            }
+            catch (error) {
+                throw new Error(`Erro ao calcular saldo: ${error.message}`);
+            }
+        });
+    }
+    getUnpaidJobsDetails(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const unpaidJobs = yield Job.findAll({
+                    attributes: ['id', 'description'],
+                    where: {
+                        id: id,
+                        paid: false
+                    }
+                });
+                // Se o campo status não existe, adicionamos uma lógica para definir
+                return unpaidJobs.map(job => ({
+                    jobId: job.id,
+                    description: job.description,
+                    status: "pending" // Defina um status aqui
+                }));
+            }
+            catch (error) {
+                throw new Error(`Erro ao buscar detalhes dos jobs não pagos: ${error.message}`);
             }
         });
     }

@@ -1,5 +1,5 @@
 import { Model, DataTypes } from "sequelize";
-import { Job } from "./job-models";
+import { Job } from "./job-models.js";
 export class Payment extends Model {
 }
 export function initializePayment(sequelize) {

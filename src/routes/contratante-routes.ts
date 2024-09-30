@@ -11,3 +11,4 @@ router.delete("/contratantes/:id", (req, res) => contratanteController.deleteCon
 router.put("/contratantes/:id", (req, res) => contratanteController.updateContratante(req, res));
 
 export default router; 
+

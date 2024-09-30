@@ -81,4 +81,28 @@ export class ProfileController {
             }
         });
     }
+    getBalance(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { profileId } = req.params;
+            try {
+                const balance = yield this.profileService.getBalance(Number(profileId));
+                return res.status(200).json({ balance });
+            }
+            catch (error) {
+                return res.status(500).json({ message: "Erro ao verificar saldo", error });
+            }
+        });
+    }
+    getUnpaidJobsDetails(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { profileId } = req.params;
+            try {
+                const unpaidJobsDetails = yield this.profileService.getUnpaidJobsDetails(Number(profileId));
+                return res.status(200).json(unpaidJobsDetails);
+            }
+            catch (error) {
+                return res.status(500).json({ message: "Erro ao buscar detalhes dos jobs não pagos", error });
+            }
+        });
+    }
 }

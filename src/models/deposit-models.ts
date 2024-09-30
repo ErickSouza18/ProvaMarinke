@@ -1,5 +1,5 @@
 import { Model, DataTypes, Sequelize, Optional } from "sequelize";
-import { Profile } from "./profile-models";
+import { Profile } from "./profile-models.js";
 
 
 export interface DepositAttributes {

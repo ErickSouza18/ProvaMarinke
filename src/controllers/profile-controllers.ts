@@ -76,4 +76,27 @@ export class ProfileController {
             return res.status(500).json({ message: "Falha ao excluir perfil", error: (error as Error).message });
         }
     }
+
+    public async getBalance(req: Request, res: Response): Promise<Response> {
+        const { profileId } = req.params; 
+        try {
+            const balance = await this.profileService.getBalance(Number(profileId)); 
+            return res.status(200).json({ balance });
+        } catch (error) {
+            return res.status(500).json({ message: "Erro ao verificar saldo", error });
+        }
+    }
+
+    public async getUnpaidJobsDetails(req: Request, res: Response): Promise<Response> {
+        const { profileId } = req.params; 
+        try {
+            const unpaidJobsDetails = await this.profileService.getUnpaidJobsDetails(Number(profileId)); 
+            return res.status(200).json(unpaidJobsDetails);
+        } catch (error) {
+            return res.status(500).json({ message: "Erro ao buscar detalhes dos jobs não pagos", error });
+        }
+    }
+    
+    
+    
 }

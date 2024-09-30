@@ -28,6 +28,7 @@ export function initializeProfile(sequelize: Sequelize) {
         primaryKey: true,
         autoIncrement: true,
       },
+      
       firstName: {
         type: DataTypes.STRING,
         allowNull: false,

@@ -1,5 +1,5 @@
 import { Model, DataTypes, Sequelize, Optional } from "sequelize";
-import { Contract } from "./contract-models";
+import { Contract } from "./contract-models.js";
 
 
 export interface JobAttributes {
@@ -12,7 +12,7 @@ export interface JobAttributes {
   paid: boolean;
 }
 
-export interface JobCreationAttributes extends Optional<JobAttributes, "id"> {}
+export interface JobCreationAttributes extends Optional<JobAttributes, "id"> { }
 
 export class Job extends Model<JobAttributes, JobCreationAttributes> implements JobAttributes {
   public id!: number;

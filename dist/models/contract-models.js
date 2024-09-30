@@ -1,5 +1,4 @@
 import { Model, DataTypes } from "sequelize";
-import { Profile } from "./profile-models";
 export class Contract extends Model {
 }
 export function initializeContract(sequelize) {
@@ -9,39 +8,32 @@ export function initializeContract(sequelize) {
             primaryKey: true,
             autoIncrement: true,
         },
-        terms: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        clientId: {
+        profileId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: Profile,
-                key: "id",
-            },
+                model: 'PROFILE', // Atualizado para refletir o nome correto da tabela
+                key: 'ID'
+            }
         },
-        contractorId: {
+        jobId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: Profile,
-                key: "id",
-            },
+                model: 'JOB', // Atualizado para refletir o nome correto da tabela
+                key: 'ID'
+            }
         },
-        operationDate: {
-            type: DataTypes.DATE,
-            allowNull: false,
-        },
-        status: {
+        description: {
             type: DataTypes.STRING,
             allowNull: false,
         },
     }, {
         sequelize,
         modelName: "Contract",
-        tableName: "contract",
+        tableName: "contract", // Atualizado para refletir o nome correto da tabela
         timestamps: false,
         freezeTableName: true,
     });
 }
+export default Contract;

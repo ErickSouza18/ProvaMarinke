@@ -84,13 +84,6 @@ export class ContratanteController {
             }
         }
     }
-    
-    
-    
-    
-
-
-
 
 
 
