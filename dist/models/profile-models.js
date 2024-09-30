@@ -1,35 +1,39 @@
 import { Model, DataTypes } from "sequelize";
-export class Contratante extends Model {
+export class Profile extends Model {
 }
-export function initializeContratante(sequelize) {
-    Contratante.init({
+export function initializeProfile(sequelize) {
+    Profile.init({
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        nomeCompleto: {
+        firstName: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        email: {
+        lastName: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true,
-            validate: {
-                isEmail: true,
-            },
         },
-        telefone: {
+        profession: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        balance: {
+            type: DataTypes.DOUBLE,
+            allowNull: false,
+            defaultValue: 0,
+        },
+        type: {
             type: DataTypes.STRING,
             allowNull: false,
         },
     }, {
         sequelize,
-        modelName: "Contratante",
-        tableName: "contratantes",
-        timestamps: true,
+        modelName: "Profile",
+        tableName: "profile",
+        timestamps: false,
         freezeTableName: true,
     });
 }
-export default Contratante;

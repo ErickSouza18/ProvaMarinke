@@ -7,71 +7,63 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Contratante } from "../models/contratante-models";
-export class ContratanteRepository {
-    //criar contratante
+import { Deposit } from "../models/deposit-models.js";
+export class DepositRepository {
     create(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const contratante = yield Contratante.create(data);
-                return contratante;
+                return yield Deposit.create(data);
             }
             catch (error) {
-                throw new Error(`Impossível criar contratante: ${error.message}`);
+                throw new Error(`Impossível criar depósito: ${error.message}`);
             }
         });
     }
-    //encontrar todos contratantes
     findAll() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield Contratante.findAll();
+                return yield Deposit.findAll();
             }
             catch (error) {
-                throw new Error(`Impossivel incontrar contratantes: ${error.message}`);
+                throw new Error(`Impossível encontrar depósitos: ${error.message}`);
             }
         });
     }
-    //encontrar contratante por id 
     findById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield Contratante.findByPk(id);
+                return yield Deposit.findByPk(id);
             }
             catch (error) {
-                throw new Error(`Impossivel de encontrar contratante pelo ID ${id}: ${error.message}`);
+                throw new Error(`Impossível encontrar depósito pelo ID ${id}: ${error.message}`);
             }
         });
     }
-    // Atualizar contratante por ID
     update(id, data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const contratante = yield Contratante.findByPk(id);
-                if (!contratante) {
-                    throw new Error(`Contratante com ID ${id} não encontrado`);
+                const deposit = yield Deposit.findByPk(id);
+                if (!deposit) {
+                    throw new Error(`Depósito com ID ${id} não encontrado`);
                 }
-                yield contratante.update(data);
-                return contratante;
+                yield deposit.update(data);
+                return deposit;
             }
             catch (error) {
-                throw new Error(`Impossível atualizar contratante com ID ${id}: ${error.message}`);
+                throw new Error(`Impossível atualizar depósito com ID ${id}: ${error.message}`);
             }
         });
     }
-    // Excluir contratante por ID
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield Contratante.destroy({
-                    where: { id }
-                });
+                const result = yield Deposit.destroy({ where: { id } });
                 if (result === 0) {
-                    throw new Error(`Contratante com ID ${id} não encontrado`);
+                    throw new Error(`Depósito com ID ${id} não encontrado`);
                 }
             }
             catch (error) {
-                throw new Error(`Impossível excluir contratante com ID ${id}: ${error.message}`);
+                throw new Error(`Impossível excluir depósito com ID ${id}: ${error.message}`);
             }
         });
     }
