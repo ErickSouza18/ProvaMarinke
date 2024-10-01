@@ -38,6 +38,10 @@ export function initializeJob(sequelize) {
             allowNull: false,
             defaultValue: false,
         },
+        profileId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
     }, {
         sequelize,
         modelName: "Job",

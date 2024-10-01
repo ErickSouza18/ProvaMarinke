@@ -21,6 +21,9 @@ import { initializeJob } from "./models/job-models.js";
 import { initializeContract } from "./models/contract-models.js";
 import { initializeDeposit } from "./models/deposit-models.js";
 import { initializePayment } from "./models/Payment-models.js";
+import { Profile } from "./models/profile-models.js";
+import { Job } from "./models/job-models.js";
+import { Payment } from "./models/Payment-models.js";
 const app = express();
 app.use(express.json());
 const PORT = 3000;
@@ -43,6 +46,14 @@ app.use("/payment", paymentRoutes);
         initializeDeposit(sequelize);
         initializePayment(sequelize);
         initializeContratante(sequelize);
+        // Realizando as associações entre os modelos
+        // Exemplo de associação entre Job e Payment
+        Payment.belongsTo(Job, { foreignKey: "jobId" });
+        Job.hasMany(Payment, { foreignKey: "jobId" });
+        // Outras associações que você tem
+        // Por exemplo:
+        Profile.hasMany(Job, { foreignKey: "profileId" });
+        Job.belongsTo(Profile, { foreignKey: "profileId" });
         yield sequelize.sync();
         console.log("Models estão sincronizados com o database");
         app.listen(PORT, () => {

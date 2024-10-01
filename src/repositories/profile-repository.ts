@@ -1,8 +1,6 @@
-import { Profile, ProfileCreationAttributes } from "../models/profile-models";
-
+import { Profile, ProfileCreationAttributes } from "../models/profile-models.js";
 
 export class ProfileRepository {
-
     public async create(data: ProfileCreationAttributes): Promise<Profile> {
         try {
             return await Profile.create(data);
@@ -29,7 +27,7 @@ export class ProfileRepository {
 
     public async update(id: number, data: Partial<ProfileCreationAttributes>): Promise<Profile | null> {
         try {
-            const profile = await Profile.findByPk(id);
+            const profile = await this.findById(id);
             if (!profile) {
                 throw new Error(`Perfil com ID ${id} não encontrado`);
             }
@@ -42,10 +40,7 @@ export class ProfileRepository {
 
     public async delete(id: number): Promise<void> {
         try {
-            const result = await Profile.destroy({
-                where: { id }
-            });
-
+            const result = await Profile.destroy({ where: { id } });
             if (result === 0) {
                 throw new Error(`Perfil com ID ${id} não encontrado`);
             }

@@ -15,8 +15,8 @@ export class PaymentController {
     createPayment(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { jobId, operationDate, paymentValue } = req.body;
-                const newPayment = yield this.paymentService.createPayment(jobId, operationDate, paymentValue);
+                const { jobId, operationDate, paymentValue, clientId } = req.body;
+                const newPayment = yield this.paymentService.createPayment(jobId, operationDate, paymentValue, clientId);
                 return res.status(201).json(newPayment);
             }
             catch (error) {

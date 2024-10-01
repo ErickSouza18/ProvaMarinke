@@ -62,6 +62,17 @@ app.use("/payment", paymentRoutes);
 
         initializeContratante(sequelize); 
 
+        // Realizando as associações entre os modelos
+        // Exemplo de associação entre Job e Payment
+        Payment.belongsTo(Job, { foreignKey: "jobId" });
+        Job.hasMany(Payment, { foreignKey: "jobId" });
+
+        // Outras associações que você tem
+        // Por exemplo:
+        Profile.hasMany(Job, { foreignKey: "profileId" });
+        Job.belongsTo(Profile, { foreignKey: "profileId" });
+
+
         await sequelize.sync();
         console.log("Models estão sincronizados com o database");
 

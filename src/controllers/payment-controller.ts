@@ -10,8 +10,8 @@ export class PaymentController {
 
     public async createPayment(req: Request, res: Response): Promise<Response> {
         try {
-            const { jobId, operationDate, paymentValue } = req.body;
-            const newPayment = await this.paymentService.createPayment(jobId, operationDate, paymentValue);
+            const { jobId, operationDate, paymentValue, clientId } = req.body;
+            const newPayment = await this.paymentService.createPayment(jobId, operationDate, paymentValue, clientId);
             return res.status(201).json(newPayment);
         } catch (error) {
             return res.status(500).json({ message: "Falha ao criar pagamento", error: (error as Error).message });

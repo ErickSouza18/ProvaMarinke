@@ -8,14 +8,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { DepositRepository } from "../repositories/deposit-repository.js";
+import { ProfileService } from "./profile-service.js";
 export class DepositService {
     constructor() {
         this.depositRepository = new DepositRepository();
+        this.profileService = new ProfileService(); // Inicialize o ProfileService
     }
     createDeposit(clientId, operationDate, depositValue) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield this.depositRepository.create({ clientId, operationDate, depositValue });
+                // Armazena o valor em centavos
+                const valueInCents = Math.round(depositValue * 100);
+                const deposit = yield this.depositRepository.create({ clientId, operationDate, depositValue: valueInCents });
+                // Atualize o saldo do Profile
+                yield this.profileService.updateBalance(clientId, valueInCents);
+                return deposit;
             }
             catch (error) {
                 throw new Error(`Impossível criar depósito: ${error.message}`);

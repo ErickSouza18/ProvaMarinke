@@ -25,6 +25,10 @@ export function initializePayment(sequelize) {
             type: DataTypes.DOUBLE,
             allowNull: false,
         },
+        clientId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
     }, {
         sequelize,
         modelName: "Payment",
