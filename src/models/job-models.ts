@@ -1,6 +1,6 @@
 import { Model, DataTypes, Sequelize, Optional } from "sequelize";
 import { Contract } from "./contract-models.js";
-
+import { Payment } from "./Payment-models.js";
 
 export interface JobAttributes {
   id: number;
@@ -10,9 +10,11 @@ export interface JobAttributes {
   paymentDate: Date | null;
   price: number;
   paid: boolean;
+  profileId: number; // Certifique-se de que este campo exista
+
 }
 
-export interface JobCreationAttributes extends Optional<JobAttributes, "id"> { }
+export interface JobCreationAttributes extends Optional<JobAttributes, "id"> {}
 
 export class Job extends Model<JobAttributes, JobCreationAttributes> implements JobAttributes {
   public id!: number;
@@ -22,6 +24,8 @@ export class Job extends Model<JobAttributes, JobCreationAttributes> implements 
   public paymentDate!: Date | null;
   public price!: number;
   public paid!: boolean;
+  public profileId!: number; // Certifique-se de que este campo exista
+
 }
 
 export function initializeJob(sequelize: Sequelize) {
@@ -61,6 +65,10 @@ export function initializeJob(sequelize: Sequelize) {
         allowNull: false,
         defaultValue: false,
       },
+      profileId: { // Adicione aqui
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
     },
     {
       sequelize,
@@ -70,4 +78,5 @@ export function initializeJob(sequelize: Sequelize) {
       freezeTableName: true,
     }
   );
+
 }

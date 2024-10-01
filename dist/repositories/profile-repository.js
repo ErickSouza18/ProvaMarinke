@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Profile } from "../models/profile-models";
+import { Profile } from "../models/profile-models.js";
 export class ProfileRepository {
     create(data) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -42,7 +42,7 @@ export class ProfileRepository {
     update(id, data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const profile = yield Profile.findByPk(id);
+                const profile = yield this.findById(id);
                 if (!profile) {
                     throw new Error(`Perfil com ID ${id} não encontrado`);
                 }
@@ -57,9 +57,7 @@ export class ProfileRepository {
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield Profile.destroy({
-                    where: { id }
-                });
+                const result = yield Profile.destroy({ where: { id } });
                 if (result === 0) {
                     throw new Error(`Perfil com ID ${id} não encontrado`);
                 }

@@ -1,20 +1,33 @@
 import { Deposit, DepositCreationAttributes } from "../models/deposit-models.js";
 import { DepositRepository } from "../repositories/deposit-repository.js";
+import { ProfileService } from "./profile-service.js";
 
 export class DepositService {
     private depositRepository: DepositRepository;
+    private profileService: ProfileService; // Adicione ProfileService
+
 
     constructor() {
         this.depositRepository = new DepositRepository();
+        this.profileService = new ProfileService(); // Inicialize o ProfileService
+
     }
 
     public async createDeposit(clientId: number, operationDate: Date, depositValue: number): Promise<Deposit> {
         try {
-            return await this.depositRepository.create({ clientId, operationDate, depositValue });
+            // Armazena o valor em centavos
+            const valueInCents = Math.round(depositValue * 100);
+            const deposit = await this.depositRepository.create({ clientId, operationDate, depositValue: valueInCents });
+
+            // Atualize o saldo do Profile
+            await this.profileService.updateBalance(clientId, valueInCents);
+
+            return deposit;
         } catch (error) {
             throw new Error(`Impossível criar depósito: ${(error as Error).message}`);
         }
     }
+
     
 
     public async getAllDeposits(): Promise<Deposit[]> {

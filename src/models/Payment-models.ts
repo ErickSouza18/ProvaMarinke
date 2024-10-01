@@ -7,6 +7,8 @@ export interface PaymentAttributes {
   jobId: number;
   operationDate: Date;
   paymentValue: number;
+  clientId: number; // Certifique-se de que este campo exista
+
 }
 
 export interface PaymentCreationAttributes extends Optional<PaymentAttributes, "id"> {}
@@ -16,6 +18,8 @@ export class Payment extends Model<PaymentAttributes, PaymentCreationAttributes>
   public jobId!: number;
   public operationDate!: Date;
   public paymentValue!: number;
+  public clientId!: number; // Certifique-se de que este campo exista
+
 }
 
 export function initializePayment(sequelize: Sequelize) {
@@ -42,6 +46,10 @@ export function initializePayment(sequelize: Sequelize) {
         type: DataTypes.DOUBLE,
         allowNull: false,
       },
+      clientId: { // Adicione aqui
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
     },
     {
       sequelize,
@@ -51,4 +59,5 @@ export function initializePayment(sequelize: Sequelize) {
       freezeTableName: true,
     }
   );
+
 }

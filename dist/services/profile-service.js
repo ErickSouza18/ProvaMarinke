@@ -7,15 +7,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Profile } from "../models/profile-models.js";
 import { Deposit } from "../models/deposit-models.js";
 import { Payment } from "../models/Payment-models.js";
 import { Job } from "../models/job-models.js";
+import { ProfileRepository } from "../repositories/profile-repository.js";
 export class ProfileService {
+    constructor() {
+        this.profileRepository = new ProfileRepository(); // Inicializa o repositório
+    }
     createProfile(firstName, lastName, profession, balance, type) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield Profile.create({ firstName, lastName, profession, balance, type });
+                const profileData = { firstName, lastName, profession, balance, type };
+                return yield this.profileRepository.create(profileData); // Usa o repositório para criar
             }
             catch (error) {
                 throw new Error(`Impossível criar perfil: ${error.message}`);
@@ -24,18 +28,18 @@ export class ProfileService {
     }
     getAllProfiles() {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield Profile.findAll();
-            }
-            catch (error) {
-                throw new Error(`Impossível encontrar perfis: ${error.message}`);
-            }
+            return yield this.profileRepository.findAll(); // Usa o repositório
         });
     }
     findById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield Profile.findByPk(id);
+                const profile = yield this.profileRepository.findById(id);
+                if (profile) {
+                    // Garanta que o balance seja um número ou no formato desejado
+                    profile.balance = Number(profile.balance); // Isso garante que seja um número
+                }
+                return profile;
             }
             catch (error) {
                 throw new Error(`Impossível encontrar perfil pelo ID ${id}: ${error.message}`);
@@ -44,57 +48,24 @@ export class ProfileService {
     }
     updateProfile(id, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const profile = yield Profile.findByPk(id);
-                if (!profile) {
-                    return null;
-                }
-                yield profile.update(data);
-                return profile;
-            }
-            catch (error) {
-                throw new Error(`Impossível atualizar perfil com ID ${id}: ${error.message}`);
-            }
+            return yield this.profileRepository.update(id, data); // Usa o repositório
         });
     }
     deleteProfile(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const result = yield Profile.destroy({
-                    where: { id }
-                });
-                if (result === 0) {
-                    throw new Error(`Perfil com ID ${id} não encontrado`);
-                }
-            }
-            catch (error) {
-                throw new Error(`Impossível excluir perfil com ID ${id}: ${error.message}`);
-            }
+            return yield this.profileRepository.delete(id); // Usa o repositório
         });
     }
-    getBalance(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const deposits = yield Deposit.sum('depositValue', { where: { id } });
-                const payments = yield Payment.sum('paymentValue', { where: { id } });
-                return (deposits || 0) - (payments || 0);
-            }
-            catch (error) {
-                throw new Error(`Erro ao calcular saldo: ${error.message}`);
-            }
-        });
-    }
-    getUnpaidJobsDetails(id) {
+    getUnpaidJobsDetails(profileId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const unpaidJobs = yield Job.findAll({
                     attributes: ['id', 'description'],
                     where: {
-                        id: id,
+                        profileId: profileId,
                         paid: false
                     }
                 });
-                // Se o campo status não existe, adicionamos uma lógica para definir
                 return unpaidJobs.map(job => ({
                     jobId: job.id,
                     description: job.description,
@@ -103,6 +74,40 @@ export class ProfileService {
             }
             catch (error) {
                 throw new Error(`Erro ao buscar detalhes dos jobs não pagos: ${error.message}`);
+            }
+        });
+    }
+    updateBalance(clientId, amount) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const profile = yield this.profileRepository.findById(clientId);
+                if (!profile) {
+                    throw new Error(`Profile com ID ${clientId} não encontrado`);
+                }
+                // Atualize o saldo (garantindo que os valores sejam tratados como números)
+                profile.balance = Number(profile.balance) + amount; // Somar corretamente
+                yield profile.save(); // Salva as alterações no banco de dados
+                return profile;
+            }
+            catch (error) {
+                throw new Error(`Impossível atualizar saldo do Profile: ${error.message}`);
+            }
+        });
+    }
+    getBalance(profileId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const totalPayments = (yield Payment.sum('paymentValue', {
+                    where: { clientId: profileId },
+                })) || 0;
+                const totalDeposits = (yield Deposit.sum('depositValue', {
+                    where: { clientId: profileId },
+                })) || 0;
+                // Calcule o saldo corretamente, convertendo para o formato em reais
+                return (totalDeposits - totalPayments) / 100; // Certifique-se de que isso está correto
+            }
+            catch (error) {
+                throw new Error(`Erro ao calcular saldo: ${error.message}`);
             }
         });
     }
