@@ -16,12 +16,14 @@
     "@types/express": "^4.17.21",
     "@types/sequelize": "^4.28.20",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.3"
   },
   "dependencies": {
+    "dotenv": "^16.4.5",
     "express": "^4.21.0",
-    "mysql2": "^3.11.3",
+    "mysql2": "^3.11.4",
     "provamarinke": "file:",
-    "sequelize": "^6.37.3"
+    "sequelize": "^6.37.5",
+    "ts-node": "^10.9.2"
   }
 }

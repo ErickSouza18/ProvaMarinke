@@ -29,7 +29,6 @@ export function initializeContratante(sequelize) {
         modelName: "Contratante",
         tableName: "contratantes",
         timestamps: true,
-        freezeTableName: true,
     });
 }
 export default Contratante;

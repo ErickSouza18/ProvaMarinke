@@ -2,9 +2,9 @@ import { Sequelize, DataTypes, Model } from "sequelize";
 
 const sequelize = new Sequelize({
     dialect: "mysql",
-    database: "Contratos",
+    database: "contratos",
     username: "root",
-    password: "123456",
+    password: "12345678",
     host: "localhost",
     port: 3306,
 });

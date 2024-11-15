@@ -3,9 +3,9 @@ import { Model, DataTypes, Sequelize, Optional } from "sequelize";
 export interface ContractAttributes {
     id: number;
     profileId: number;
-    jobId: number; 
+    jobId: number;
     description: string;
-    createdAt?: Date; 
+    createdAt?: Date;
     updatedAt?: Date;
 }
 
@@ -13,8 +13,8 @@ export interface ContractCreationAttributes extends Optional<ContractAttributes,
 
 export class Contract extends Model<ContractAttributes, ContractCreationAttributes> implements ContractAttributes {
     public id!: number;
-    public profileId!: number; 
-    public jobId!: number; 
+    public profileId!: number;
+    public jobId!: number;
     public description!: string;
 
 }
@@ -31,16 +31,16 @@ export function initializeContract(sequelize: Sequelize) {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
-                    model: 'PROFILE', // Atualizado para refletir o nome correto da tabela
-                    key: 'ID'
+                    model: 'profile', // Atualizado para refletir o nome correto da tabela
+                    key: 'id'
                 }
             },
             jobId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
-                    model: 'JOB', // Atualizado para refletir o nome correto da tabela
-                    key: 'ID'
+                    model: 'jobs', // Atualizado para refletir o nome correto da tabela
+                    key: 'id'
                 }
             },
             description: {
@@ -52,8 +52,7 @@ export function initializeContract(sequelize: Sequelize) {
             sequelize,
             modelName: "Contract",
             tableName: "contract", // Atualizado para refletir o nome correto da tabela
-            timestamps: false, 
-            freezeTableName: true,
+            timestamps: false,
         }
     );
 }

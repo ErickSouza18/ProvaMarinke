@@ -12,16 +12,16 @@ export function initializeContract(sequelize) {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'PROFILE', // Atualizado para refletir o nome correto da tabela
-                key: 'ID'
+                model: 'profile', // Atualizado para refletir o nome correto da tabela
+                key: 'id'
             }
         },
         jobId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'JOB', // Atualizado para refletir o nome correto da tabela
-                key: 'ID'
+                model: 'jobs', // Atualizado para refletir o nome correto da tabela
+                key: 'id'
             }
         },
         description: {
@@ -33,7 +33,6 @@ export function initializeContract(sequelize) {
         modelName: "Contract",
         tableName: "contract", // Atualizado para refletir o nome correto da tabela
         timestamps: false,
-        freezeTableName: true,
     });
 }
 export default Contract;

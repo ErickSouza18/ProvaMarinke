@@ -5,7 +5,7 @@ export interface ContratanteAttributes {
   nomeCompleto: string;
   email: string;
   telefone: string;
-  createdAt?: Date; 
+  createdAt?: Date;
   updatedAt?: Date;
 }
 
@@ -36,7 +36,7 @@ export function initializeContratante(sequelize: Sequelize) {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true, 
+        unique: true,
         validate: {
           isEmail: true,
         },
@@ -50,8 +50,7 @@ export function initializeContratante(sequelize: Sequelize) {
       sequelize,
       modelName: "Contratante",
       tableName: "contratantes",
-      timestamps: true, 
-      freezeTableName: true,
+      timestamps: true,
     }
   );
 }

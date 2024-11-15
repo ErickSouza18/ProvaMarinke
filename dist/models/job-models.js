@@ -1,5 +1,4 @@
 import { Model, DataTypes } from "sequelize";
-import { Contract } from "./contract-models.js";
 export class Job extends Model {
 }
 export function initializeJob(sequelize) {
@@ -12,10 +11,6 @@ export function initializeJob(sequelize) {
         contractId: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            references: {
-                model: Contract,
-                key: "id",
-            },
         },
         description: {
             type: DataTypes.STRING,
@@ -45,8 +40,7 @@ export function initializeJob(sequelize) {
     }, {
         sequelize,
         modelName: "Job",
-        tableName: "job",
+        tableName: "jobs",
         timestamps: false,
-        freezeTableName: true,
     });
 }
